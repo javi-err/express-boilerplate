@@ -1,0 +1,1 @@
+TRUNCATE music_thoughts;

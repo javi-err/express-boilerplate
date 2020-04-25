@@ -3,8 +3,12 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
-
+const { NODE_ENV } = require('./config')
+const ThoughtsRouter = require('./musicthoughts/thoughts-router')
+const commentsRouter = require('./musicthoughtscomments/comments-router')
 const app = express()
+
+
 
 const morganOption = (NODE_ENV === 'production')? 'tiny'
 : 'common';
@@ -12,13 +16,22 @@ const morganOption = (NODE_ENV === 'production')? 'tiny'
 app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
+app.use('/api/thoughts', ThoughtsRouter)
+app.use('/api/comments', commentsRouter)
+
 
 app.get('/', (req, res) => {
   res.send('Hello, boilerplate!')
 })
 
+app.get('/xss', (req, res) => {
+  res.cookie('secretToken', '1234567890');
+  res.sendFile( '/xss-example.html')
+})
+
  app.use(function errorHandler(error, req, res, next) {
      let response
+      console.log(error.message)
      if (NODE_ENV === 'production') {       
        response = { error: { message: 'server error' } }
      } else {
