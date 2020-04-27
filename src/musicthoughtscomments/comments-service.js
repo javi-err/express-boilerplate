@@ -1,10 +1,11 @@
 const CommentsService = {
+
   getById(db, id) {
     return db
       .from('music_thoughts_comments AS comm')
       .select(
         'comm.id',
-        'comm.text',
+        'comm.thought_text',
         'comm.date_created',
         'comm.thought_id',
       )      .where('comm.id', id)
@@ -26,8 +27,10 @@ insertComment(db, newComment) {
 serializeComment(comment) {
   return {
     id: comment.id,
-    text: comment.text,
+    thought_text: comment.thought_text,
     thought_id: comment.thought_id,
   }
 }
 }
+
+module.exports = CommentsService

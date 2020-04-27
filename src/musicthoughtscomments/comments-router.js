@@ -8,8 +8,8 @@ const jsonBodyParser = express.json()
 commentsRouter
   .route('/')
   .post(jsonBodyParser, (req, res, next) => {
-    const { thought_id, text } = req.body
-    const newComment = { thought_id, text}
+    const { thought_id, thought_text } = req.body
+    const newComment = { thought_id, thought_text}
 
     for (const [key, value] of Object.entries(newComment))
       if (value == null)

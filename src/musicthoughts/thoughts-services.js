@@ -27,6 +27,12 @@ updateThoughts(knex, id, newThoughtFields) {
   .where({id})
   .update(newThoughtFields)
 },
+
+getCommentsByID(knex) {
+  return knex.from('music_thoughts')
+  .join('music_thoughts_comments', 'music_thoughts_comments.thoughts.id ')
+  .returning('thought_text')
+},
 }
 
 module.exports = ThoughtsService
