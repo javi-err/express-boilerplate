@@ -50,6 +50,20 @@ ThoughtsService.getAllThoughts(
 })
 
 thoughtsRouter
+.route('/:thoughts_id/comments')
+console.log('Hello World')
+.get((req,res,next) => {
+ThoughtsService.getCommentsByID(
+  req.app.get('db')
+)
+.then(thoughts=>{
+  res.json(thoughts)
+  console.log(thoughts)
+})
+.catch(next)
+})
+
+thoughtsRouter
 .route('/:thoughts_id')
 .all((req, res, next) => {
   ThoughtsService.getbyID(
@@ -113,18 +127,6 @@ thoughtsRouter
   .catch(next)
 })
 
-thoughtsRouter
-.route('/:thoughts_id/comments')
-console.log('Hello World')
-.get((req,res,next) => {
-ThoughtsService.getCommentsByID(
-  req.app.get('db')
-)
-.then(thoughts=>{
-  res.json(thoughts)
-  console.log(thoughts)
-})
-.catch(next)
-})
+
 
 module.exports = thoughtsRouter
