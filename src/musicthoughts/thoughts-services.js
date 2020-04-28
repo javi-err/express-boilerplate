@@ -28,10 +28,17 @@ updateThoughts(knex, id, newThoughtFields) {
   .update(newThoughtFields)
 },
 
-getCommentsByID(knex) {
-  return knex.from('music_thoughts')
-  .join('music_thoughts_comments', 'music_thoughts_comments.thoughts.id ')
-  .returning('thought_text')
+getCommentsByID(knex, id) {
+  return knex
+  .select("comment.thought_text", "comment.id")
+  .from("music_thoughts")
+  .where("music_thoughts.id", id)
+  .rightJoin(
+    "music_thoughts_comments as comment",
+    "comment.thought_id ",
+    "music_thoughts.id"
+  )
+  .returning("thought_text");
 },
 }
 

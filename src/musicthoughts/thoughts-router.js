@@ -51,14 +51,13 @@ ThoughtsService.getAllThoughts(
 
 thoughtsRouter
 .route('/:thoughts_id/comments')
-console.log('Hello World')
 .get((req,res,next) => {
 ThoughtsService.getCommentsByID(
-  req.app.get('db')
+  req.app.get('db'),
+  req.params.thoughts_id
 )
 .then(thoughts=>{
   res.json(thoughts)
-  console.log(thoughts)
 })
 .catch(next)
 })
