@@ -40,15 +40,11 @@ getCommentsByID(knex, id) {
   )
   .returning("thought_text");
 },
-insertLikes(knex, likesUpdate) {
-  return knex
-  .insert(likesUpdate)
-  .into('music_thoughts')
-  .returning('*')
-  .then(rows => {
-    return rows[0]
-  })
+incrementLikes(knex, id) {
+  return knex('music_thoughts')
+  .where({id})
+  .increment('likes', 1)
 }
-}
+} 
 
 module.exports = ThoughtsService

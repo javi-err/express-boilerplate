@@ -125,13 +125,15 @@ thoughtsRouter
   .catch(next)
 })
 
+thoughtsRouter
+.route('/:thoughts_id/likes')
 .post(jsonParser, (req, res, next) => {
-  const { likes } = req.body
-  const likeUpdate = { likes }
-  ThoughtsService.insertLikes(
+  const thoughtId = req.params.thoughts_id;
+  ThoughtsService.incrementLikes(
     req.app.get('db'),
-    likeUpdate++
-  )  .then(thought => {
+    thoughtId
+  )
+  .then(thought => {
     res.status(201)
     .location(path.posix.join(req.originalUrl, `/${thought.id}`))
     .json(thought)
