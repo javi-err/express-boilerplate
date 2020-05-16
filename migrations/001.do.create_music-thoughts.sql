@@ -4,6 +4,6 @@ title TEXT NOT NULL,
 content TEXT,
 tag TEXT,
 date_published TIMESTAMPTZ DEFAULT now() NOT NULL,
-likes INTEGER
+likes INT DEFAULT 0
 );
 

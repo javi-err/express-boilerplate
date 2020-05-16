@@ -20,7 +20,7 @@ ThoughtsService.getAllThoughts(
 })
 
 .post(jsonParser, (req, res, next) => {
-  const {title, content, tag} = req.body
+  const {title, content, tag, } = req.body
   const newThought = { title, content, tag }
   if(!title) {
     return res.status(400).json({
@@ -73,7 +73,7 @@ thoughtsRouter
   if(!thought) {
     return res.status(404).json({
       error: {message: `Thought doesn't exist`}
-    })
+    })  
   }
   res.thoughts = thought
   next()
@@ -104,9 +104,10 @@ thoughtsRouter
 }
 )
 
-.patch(jsonParser, (req, res, next) => {
+.patch(jsonParser, (req, res, next)  => {
   const {title, content, tag} = req.body
   const thoughtToUpdate = {title, content, tag}
+  console.log(thoughtToUpdate);
   const numberOfValues = Object.values(thoughtToUpdate).filter(Boolean).length
   if(numberOfValues === 0) {
     return res.status(400).json({
@@ -118,14 +119,25 @@ thoughtsRouter
     req.params.thoughts_id,
     thoughtToUpdate
   )
-
- 
-    .then(newRowsAffected => {
+  .then(newRowsAffected => {
     res.status(204).end()
   })
   .catch(next)
 })
 
+.post(jsonParser, (req, res, next) => {
+  const { likes } = req.body
+  const likeUpdate = { likes }
+  ThoughtsService.insertLikes(
+    req.app.get('db'),
+    likeUpdate++
+  )  .then(thought => {
+    res.status(201)
+    .location(path.posix.join(req.originalUrl, `/${thought.id}`))
+    .json(thought)
+  })
+  .catch(next)
+})
 
 
 module.exports = thoughtsRouter

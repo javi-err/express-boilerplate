@@ -30,7 +30,7 @@ updateThoughts(knex, id, newThoughtFields) {
 
 getCommentsByID(knex, id) {
   return knex
-  .select("comment.thought_text", "comment.id")
+  .select("comment.thought_text", "comment.id", 'comment.thought_id')
   .from("music_thoughts")
   .where("music_thoughts.id", id)
   .rightJoin(
@@ -40,6 +40,15 @@ getCommentsByID(knex, id) {
   )
   .returning("thought_text");
 },
+insertLikes(knex, likesUpdate) {
+  return knex
+  .insert(likesUpdate)
+  .into('music_thoughts')
+  .returning('*')
+  .then(rows => {
+    return rows[0]
+  })
+}
 }
 
 module.exports = ThoughtsService
